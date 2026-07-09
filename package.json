@@ -1,0 +1,16 @@
+{
+  "name": "yt_clone",
+  "version": "1.0.0",
+  "description": "Yt_Clone",
+  "keywords": [
+    "JavaScript",
+    "Backend"
+  ],
+  "license": "ISC",
+  "author": "Nihar Nadiya",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
