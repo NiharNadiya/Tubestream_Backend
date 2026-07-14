@@ -15,6 +15,8 @@ const registerUser = asyncHandler(async (req,res)=>{
     //return response
 
     const{fullName,email,password,username}=req.body
+    // console.log(req.body);
+    // console.log(req.files);
 
     if([fullName,email,password,username].some((fields)=>fields?.trim()==="")){
         throw new apiError(400,"All fields must be filled!")
@@ -55,11 +57,16 @@ const registerUser = asyncHandler(async (req,res)=>{
     }
 
    const avatarLoacalPath = req.files?.avatar[0]?.path;
-   const coverImageLocalPath = req.files?.coverImage[0]?.path;
+//    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    let coverImageLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length>0){
+        coverImageLocalPath = req.files?.coverImage[0]?.path;
+    }
 
    if(!avatarLoacalPath){
     throw new apiError(400,"Avatar file is required!");
    }
+   
 
    const avatar = await uploadOnCloudinary(avatarLoacalPath);
    const coverImage = await uploadOnCloudinary(coverImageLocalPath);
@@ -70,14 +77,14 @@ const registerUser = asyncHandler(async (req,res)=>{
 
   const user = await User.create({
     fullName,
-    username: username.toLowercase(),
+    username: username.toLowerCase(),
     avatar:avatar.url,
     email,
     password,
     coverImage: coverImage?.url || ""
 
 
-  });
+  })
 
   const createdUser = await User.findById(user._id).select(
     " -password -refreshToken"
